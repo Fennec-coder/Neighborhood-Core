@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=en_RU&amp;apikey=<%= ENV["YANDEX_GEOCODER_KEY"] %>" type="text/javascript"></script>
   </head>
-
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    <%= yield %>
+    <%= content_tag(:p, "🚀  " + notice, class: 'notice') if notice.present? %>
+    <%= content_tag(:p, "⚠️  " + alert, class: 'notice') if alert.present? %>
+    <div class="container">
+      <%= yield %>
+    </div>
   </body>
 </html>
