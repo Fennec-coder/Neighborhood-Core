@@ -1,0 +1,9 @@
+<%# A "plug" component to use in most places where you want to display some information  %>
+<%# in full screen, optionally with additional data that can be passed in a block. %>
+
+<%# Required locales: emoji, title, body. %>
+
+<div class="form center">
+  <h1><%= emoji %><br><%= title %></h1><p><%= body %></p>
+  <%= yield %>
+</div>

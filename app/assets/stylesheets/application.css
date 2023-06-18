@@ -76,6 +76,14 @@ a {
   color: #37745B;
 }
 
+p {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 24px;
+}
+
 .notice {
   position: absolute;
   bottom: -15px;
@@ -86,4 +94,3 @@ a {
   backdrop-filter: blur(4px);
   border: 1px solid #ccc;
 }
-

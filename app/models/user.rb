@@ -7,5 +7,8 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true
 
-  has_many :houses, foreign_key: 'creator_id'
+  has_many :created_houses, foreign_key: 'creator_id', class_name: 'House'
+
+  has_many :user_house_subscriptions
+  has_many :subscribed_houses, through: :user_house_subscriptions, source: :house
 end

@@ -1,0 +1,39 @@
+<%= javascript_include_tag 'map' %>
+<h1>Register a new house</h1>
+<script>
+  var mapOptions = {
+    controls: ['zoomControl'],
+    center: [56.84, 60.6],
+    zoom: 11
+  };
+
+  var indicatorsOnMap = {
+    registeredHouses: true,
+    userLabels: true
+  }
+
+  const currentUserToken = "<%= form_authenticity_token %>";
+</script>
+<style>
+  #map {
+    height: 75vh;
+  }
+</style>
+<div id="map"></div>
+<%= form_with(model: @house, url: houses_path, local: true) do |form| %>
+  <div class="field" style="display: none;">
+    <%= form.label :address %>
+    <%= form.text_field :address, id: "house_address", class: "form-control" %>
+  </div>
+  <div class="field" style="display: none;">
+    <%= form.label :latitude %>
+    <%= form.text_field :latitude, id: "house_latitude", class: "form-control" %>
+  </div>
+  <div class="field" style="display: none;">
+    <%= form.label :longitude %>
+    <%= form.text_field :longitude, id: "house_longitude", class: "form-control" %>
+  </div>
+  <div class="actions">
+    <%= form.submit "Create House", class: "button" %>
+  </div>
+<% end %>
