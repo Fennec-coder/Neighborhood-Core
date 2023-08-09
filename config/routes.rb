@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { registrations: 'registrations' }
+  mount_devise_token_auth_for 'User', at: 'auth', controllers: { registrations: 'registrations' }
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
@@ -10,7 +11,5 @@ Rails.application.routes.draw do
   end
 
   resources :user_house_subscriptions
-
-  # resources :users
 
 end

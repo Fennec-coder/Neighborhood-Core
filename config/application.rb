@@ -9,6 +9,8 @@ Bundler.require(*Rails.groups)
 
 module Neighborhood
   class Application < Rails::Application
+    config.api_only = true
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
@@ -19,5 +21,17 @@ module Neighborhood
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.middleware.use Rack::Cors do
+      allow do
+        origins '*'
+        resource '*',
+          headers: :any,
+          expose: ['access-token', 'expiry', 'token-type', 'uid', 'client'],
+          methods: [:get, :post, :options, :delete, :put]
+      end
+    end
+
+    config.session_store :cookie_store, key: '_your_app_session'
   end
 end

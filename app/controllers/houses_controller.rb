@@ -4,7 +4,13 @@ class HousesController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    houses = House.where(
+      'ST_Intersects(location, ST_MakeEnvelope(?, ?, ?, ?))',
+      *home_search_area[:bottom_left],
+      *home_search_area[:top_right]
+    ) if home_search_area
 
+    render json: houses.to_json
   end
 
   def show
@@ -44,16 +50,6 @@ class HousesController < ApplicationController
     else
       render :edit
     end
-  end
-
-  def coordinates
-    houses = House.where(
-      'ST_Intersects(location, ST_MakeEnvelope(?, ?, ?, ?))',
-      *home_search_area[:bottom_left],
-      *home_search_area[:top_right]
-    ) if home_search_area
-
-    render json: houses.to_json
   end
 
   private

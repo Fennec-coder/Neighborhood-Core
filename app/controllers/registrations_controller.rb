@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class RegistrationsController < Devise::RegistrationsController
+class RegistrationsController < DeviseTokenAuth::RegistrationsController
   private
 
   def sign_up_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.permit(:name, :surname, :nickname, :email, :password, :password_confirmation)
   end
 end

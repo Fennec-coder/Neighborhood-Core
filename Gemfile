@@ -63,6 +63,8 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem 'rubocop'
+  gem 'pry'
 end
 
 group :test do
@@ -72,12 +74,18 @@ group :test do
   gem 'webdrivers'
 end
 
-# auth
+# Authorization and authentication
 gem 'devise'
+gem 'devise_token_auth'
+gem 'rack-cors'
+gem 'omniauth'
 
+# Environment
 gem 'dotenv'
 
+# Working with coordinates
 gem 'activerecord-postgis-adapter'
-gem 'pry'
-gem 'rubocop'
 gem 'rgeo'
+
+# Convenience
+gem 'dry-monads'
