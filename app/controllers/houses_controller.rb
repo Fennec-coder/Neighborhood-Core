@@ -4,22 +4,27 @@ class HousesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    houses = House.where(
-      'ST_Intersects(location, ST_MakeEnvelope(?, ?, ?, ?))',
-      *home_search_area[:bottom_left],
-      *home_search_area[:top_right]
-    ) if home_search_area
+    unless home_search_area
+      render json: { error: 'Please provide search parameters.' },
+             status: :unprocessable_entity and return
+    end
 
-    render json: houses.to_json
+    result = GetCoordinatesOfRegisteredHouses.new(home_search_area).call
+
+    render json: result.to_json
   end
 
   def show
-    @house = House.find(params[:id])
+    house = House.find_by(id: params[:id])
+
+    if house
+      render json: house.to_json
+    else
+      render status: :not_found
+    end
   end
 
-  def new
-    @house = House.new
-  end
+  #### below - update ####
 
   def create
     @house = House.new(house_params)
@@ -27,7 +32,7 @@ class HousesController < ApplicationController
     @house.creator = current_user
 
     if @house.save
-      redirect_to house_path(@house), notice: "Congratulations! House successfully registered!"
+      redirect_to house_path(@house), notice: 'Congratulations! House successfully registered!'
     else
       redirect_to :new_house, alert: @house.errors.full_messages.join(', ')
     end
@@ -63,22 +68,16 @@ class HousesController < ApplicationController
   end
 
   def home_search_area
-    return unless search_area_params_present?
-
-    additional_loading = ENV['ADDITIONAL_LOADING_OF_MAP'].to_f
-
     @home_search_area ||= {
-      top_right: calculate_coordinates(params[:topRightCoords], additional_loading),
-      bottom_left: calculate_coordinates(params[:bottomLeftCoords], -additional_loading)
+      top_right: calculate_coordinates(params[:topRightCoords]),
+      bottom_left: calculate_coordinates(params[:bottomLeftCoords])
     }
   end
 
-  def search_area_params_present?
-    params[:topRightCoords].present? && params[:bottomLeftCoords].present?
-  end
+  def calculate_coordinates(coords)
+    return unless coords
 
-  def calculate_coordinates(coords, adjustment)
-    coords.split(',').map { |coord| coord.to_f + adjustment }
+    coords.split(',').map { |coord| coord.to_f }
   end
 
   def geografic(longitude, latitude)

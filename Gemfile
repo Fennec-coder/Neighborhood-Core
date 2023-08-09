@@ -83,9 +83,14 @@ gem 'omniauth'
 # Environment
 gem 'dotenv'
 
+# Sessions
+gem 'activerecord-session_store'
+
 # Working with coordinates
 gem 'activerecord-postgis-adapter'
 gem 'rgeo'
 
 # Convenience
 gem 'dry-monads'
+gem 'dry-initializer'
+gem 'dry-validation'
