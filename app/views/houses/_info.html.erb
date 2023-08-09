@@ -1,0 +1,61 @@
+<% binding.pry %>
+
+<script>
+  var mapOptions = {
+    controls: [],
+    center: "<%= @house.location %>".replace('POINT (', '').replace(')', '').split(' '),
+    zoom: 15,
+    suppressMapOpenBlock: true, // Отключение перемещения карты
+  };
+
+  var indicatorsOnMap = {
+    markInMiddle: true
+  }
+
+  window.addEventListener('scroll', function() {
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    var blackBlock = document.querySelector('.black-block');
+    var blackBlockHeight = 400 - (scrollTop * 0.5); // Уменьшаем высоту блока на половину скролла
+
+    if (blackBlockHeight >= 0) {
+      blackBlock.style.height = blackBlockHeight + 'px';
+    }
+  });
+</script>
+
+<style>
+  /* Стили для блоков */
+  .black-block {
+    height: 400px;
+    transition: height 0.3s ease; /* Плавное изменение высоты */
+  }
+
+  .white-block {
+    background-color: #fff;
+    height: 1000px;
+    box-shadow: 0px 0px 150px rgba(255, 255, 255, 1); /* Тень блока */
+    position: relative;
+    z-index: 1; /* Устанавливаем z-index для блока */
+    pointer-events: none; /* Отключение взаимодействия с элементами в блоке */
+  }
+
+  #map {
+    height: 400px;
+    pointer-events: none; /* Отключение взаимодействия с картой */
+  }
+
+  .white-block h1 {
+    text-align: center;
+    margin-top: 20px; /* Отступ сверху */
+  }
+</style>
+
+<div class="modal">
+  <div class="black-block">
+  <div id="map"></div>
+</div>
+<div class="white-block">
+  <h1><%= @house.address %></h1>
+  <%= link_to "Edit", edit_house_path(@house)%>
+</div>
+</div>

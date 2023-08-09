@@ -1,3 +1,12 @@
+/*
+ *= require_tree ./blocks
+ *= require_tree ./atoms
+ */
+
+.black {
+  color: #000000;
+}
+
 h1 {
   font-family: 'Roboto';
   font-style: normal;
@@ -6,63 +15,9 @@ h1 {
   line-height: 57px;
 }
 
-.black {
-  color: #000000;
-}
-
-.center {
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-  display: flex;
-  height: 100vh;
-}
-
-.input-field {
-  border-radius: 8px;
-  border: 1px solid #505050;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-  width: 300px;
-  height: 35px;
-  font-size: 20px;
-  background-color: rgba(231, 234, 239, 0.8); /* Здесь задается прозрачность фона с использованием альфа-канала */
-}
-
 body {
   background-color: #E7EAEF; /* Здесь задается цвет фона в шестнадцатеричном формате */
   margin: 0;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-}
-
-.form > * {
-  margin-bottom: 20px;
-}
-
-.button {
-  cursor: pointer;
-  min-width: 300px;
-  height: 60px;
-
-  background: #8B9D77;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 8px;
-  border: 0px;
-
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 23px;
-  align-items: center;
-  text-align: center;
-
-  color: #E7EAEF;
 }
 
 a {
@@ -84,13 +39,10 @@ p {
   line-height: 24px;
 }
 
-.notice {
-  position: absolute;
-  bottom: -15px;
-  left: 0;
-  width: 100%;
-  background-color: rgba(248, 248, 248, 0.2);
-  padding: 25px;
-  backdrop-filter: blur(4px);
-  border: 1px solid #ccc;
+.center {
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  height: 100vh;
 }

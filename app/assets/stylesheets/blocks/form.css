@@ -1,0 +1,20 @@
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form > * {
+  margin-bottom: 20px;
+}
+
+.input-field {
+  border-radius: 8px;
+  border: 1px solid #505050;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  width: 300px;
+  height: 35px;
+  font-size: 20px;
+  background-color: rgba(231, 234, 239, 0.8); /* Здесь задается прозрачность фона с использованием альфа-канала */
+}

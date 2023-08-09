@@ -5,7 +5,10 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root 'posts#index'
 
-  resources :houses
+  resources :houses do
+    get :coordinates, on: :collection
+  end
+
   resources :user_house_subscriptions
 
   # resources :users

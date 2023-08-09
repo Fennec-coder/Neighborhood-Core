@@ -1,25 +1,3 @@
-<%= javascript_include_tag 'map' %>
-<h1>Register a new house</h1>
-<script>
-  var mapOptions = {
-    controls: ['zoomControl'],
-    center: [56.84, 60.6],
-    zoom: 11
-  };
-
-  var indicatorsOnMap = {
-    registeredHouses: true,
-    userLabels: true
-  }
-
-  const currentUserToken = "<%= form_authenticity_token %>";
-</script>
-<style>
-  #map {
-    height: 75vh;
-  }
-</style>
-<div id="map"></div>
 <%= form_with(model: @house, url: houses_path, local: true) do |form| %>
   <div class="field" style="display: none;">
     <%= form.label :address %>

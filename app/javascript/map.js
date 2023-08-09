@@ -9,7 +9,7 @@ function getHouses(topRightCoords, bottomLeftCoords) {
   params.append('topRightCoords', topRightCoords.join(','));
   params.append('bottomLeftCoords', bottomLeftCoords.join(','));
 
-  fetch(`/houses?${params.toString()}`, {
+  fetch(`/houses/coordinates?${params.toString()}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
