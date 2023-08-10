@@ -5,13 +5,17 @@ class HousesController < ApplicationController
 
   def index
     unless home_search_area
-      render json: { error: 'Please provide search parameters.' },
+      render json: { errors: ['Please provide search parameters.'] },
              status: :unprocessable_entity and return
     end
 
     result = GetCoordinatesOfRegisteredHouses.new(home_search_area).call
 
-    render json: result.to_json
+    if result.success?
+      render json: result.value!
+    else
+      render json: { errors: result.failure }, status: :unprocessable_entity
+    end
   end
 
   def show
@@ -24,19 +28,17 @@ class HousesController < ApplicationController
     end
   end
 
-  #### below - update ####
-
   def create
-    @house = House.new(house_params)
-    @house.location = "POINT(#{location_params.values.join(' ')})"
-    @house.creator = current_user
+    result = RegisterHouse.new(house_params.to_h).call
 
-    if @house.save
-      redirect_to house_path(@house), notice: 'Congratulations! House successfully registered!'
+    if result.success?
+      render json: result.value!
     else
-      redirect_to :new_house, alert: @house.errors.full_messages.join(', ')
+      render json: { errors: result.failure }, status: :unprocessable_entity
     end
   end
+
+  #### below - update ####
 
   def destroy
     @house = House.find(params[:id])
@@ -60,11 +62,7 @@ class HousesController < ApplicationController
   private
 
   def house_params
-    params.require(:house).permit(:name, :address)
-  end
-
-  def location_params
-    params.require(:house).permit(:latitude, :longitude)
+    params.require(:house).permit(:creator_id, :address, :latitude, :longitude)
   end
 
   def home_search_area

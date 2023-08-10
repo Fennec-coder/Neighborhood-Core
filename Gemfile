@@ -51,7 +51,10 @@ gem 'bootsnap', require: false
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mingw x64_mingw]
+  gem 'pry'
+  gem 'rspec'
   gem 'factory_bot_rails'
+  gem 'faker'
   gem 'rspec-rails', '~> 6.0.0'
 end
 
@@ -64,21 +67,22 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
   gem 'rubocop'
-  gem 'pry'
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara'
+  gem 'rails-controller-testing'
   gem 'selenium-webdriver'
+  gem 'shoulda-matchers'
   gem 'webdrivers'
 end
 
 # Authorization and authentication
 gem 'devise'
 gem 'devise_token_auth'
-gem 'rack-cors'
 gem 'omniauth'
+gem 'rack-cors'
 
 # Environment
 gem 'dotenv'
@@ -91,6 +95,6 @@ gem 'activerecord-postgis-adapter'
 gem 'rgeo'
 
 # Convenience
-gem 'dry-monads'
 gem 'dry-initializer'
+gem 'dry-monads'
 gem 'dry-validation'

@@ -154,6 +154,8 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
+    faker (3.2.0)
+      i18n (>= 1.8.11, < 2)
     globalid (1.1.0)
       activesupport (>= 5.0)
     hashie (5.0.0)
@@ -239,6 +241,10 @@ GEM
       activesupport (= 7.0.7.2)
       bundler (>= 1.15.0)
       railties (= 7.0.7.2)
+    rails-controller-testing (1.0.5)
+      actionpack (>= 5.0.1.rc1)
+      actionview (>= 5.0.1.rc1)
+      activesupport (>= 5.0.1.rc1)
     rails-dom-testing (2.2.0)
       activesupport (>= 5.0.0)
       minitest
@@ -267,6 +273,10 @@ GEM
     rgeo-activerecord (7.0.1)
       activerecord (>= 5.0)
       rgeo (>= 1.0.0)
+    rspec (3.12.0)
+      rspec-core (~> 3.12.0)
+      rspec-expectations (~> 3.12.0)
+      rspec-mocks (~> 3.12.0)
     rspec-core (3.12.2)
       rspec-support (~> 3.12.0)
     rspec-expectations (3.12.3)
@@ -304,6 +314,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    shoulda-matchers (5.3.0)
+      activesupport (>= 5.2.0)
     sprockets (4.2.0)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -358,6 +370,7 @@ DEPENDENCIES
   dry-monads
   dry-validation
   factory_bot_rails
+  faker
   importmap-rails
   jbuilder
   omniauth
@@ -366,11 +379,14 @@ DEPENDENCIES
   puma (~> 5.6)
   rack-cors
   rails (~> 7.0.4, >= 7.0.4.3)
+  rails-controller-testing
   redis (~> 4.0)
   rgeo
+  rspec
   rspec-rails (~> 6.0.0)
   rubocop
   selenium-webdriver
+  shoulda-matchers
   sprockets-rails
   stimulus-rails
   turbo-rails
