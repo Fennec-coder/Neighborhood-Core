@@ -5,7 +5,7 @@ HouseCoordinatesSchema = Dry::Schema.Params do
   required(:top_right).array(:float).value(size?: 2)
 end
 
-class GetCoordinatesOfRegisteredHouses
+class House::GetCoordinatesByRange
   extend  Dry::Initializer
   include Dry::Monads[:result]
 

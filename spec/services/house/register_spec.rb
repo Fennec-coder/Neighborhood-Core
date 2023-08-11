@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe RegisterHouse, type: :service do
+RSpec.describe House::Register, type: :service do
   let!(:creator) { create(:user) }
 
   let(:valid_house_data) do

@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
 HouseSchema = Dry::Schema.Params do
-  required(:creator_id).maybe(:integer)
-  required(:address).filled(:string)
-  required(:latitude).maybe(:float)
-  required(:longitude).maybe(:float)
+  required(:id).maybe(:integer)
+  required(:house_id).maybe(:integer)
 end
 
 # RegisterHouse — это сервисный класс, отвечающий за регистрацию нового дома.
 #
-class RegisterHouse
+class House::Register
   extend  Dry::Initializer
   include Dry::Monads[:result]
 
@@ -22,16 +20,12 @@ class RegisterHouse
 
     params = validated_params.to_h
 
-    house = House.new(
-      address: params[:address],
-      creator_id: params[:creator_id],
-      location:
-        RGeo::Geographic.spherical_factory(srid: 4326)
-          .point(params[:longitude], params[:latitude])
-    )
+    house = House.find_by(params)
 
-    if house.save
-      Success(house)
+    return Failure("The user's registered home was not found") if house.present?
+
+    if house.delete
+      Success()
     else
       Failure(house.errors)
     end

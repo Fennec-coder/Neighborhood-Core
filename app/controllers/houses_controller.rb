@@ -9,7 +9,7 @@ class HousesController < ApplicationController
              status: :unprocessable_entity and return
     end
 
-    result = GetCoordinatesOfRegisteredHouses.new(home_search_area).call
+    result = House::GetCoordinatesByRange.new(home_search_area).call
 
     if result.success?
       render json: result.value!
@@ -29,7 +29,7 @@ class HousesController < ApplicationController
   end
 
   def create
-    result = RegisterHouse.new(house_params.to_h).call
+    result = House::Register.new(house_params.to_h).call
 
     if result.success?
       render json: result.value!

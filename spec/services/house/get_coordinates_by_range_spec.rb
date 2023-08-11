@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe GetCoordinatesOfRegisteredHouses, type: :service do
+RSpec.describe House::GetCoordinatesByRange, type: :service do
   let(:valid_search_area) do
     {
       bottom_left: [0.0, 0.0],
