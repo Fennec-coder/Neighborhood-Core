@@ -2,12 +2,10 @@
 
 HouseSchema = Dry::Schema.Params do
   required(:id).maybe(:integer)
-  required(:house_id).maybe(:integer)
+  required(:creator_id).maybe(:integer)
 end
 
-# RegisterHouse — это сервисный класс, отвечающий за регистрацию нового дома.
-#
-class House::Register
+class House::Delete
   extend  Dry::Initializer
   include Dry::Monads[:result]
 
@@ -22,10 +20,10 @@ class House::Register
 
     house = House.find_by(params)
 
-    return Failure("The user's registered home was not found") if house.present?
+    return Failure("The user's registered home was not found") if house.blank?
 
     if house.delete
-      Success()
+      Success('Deleted successfully')
     else
       Failure(house.errors)
     end

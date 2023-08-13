@@ -29,40 +29,32 @@ class HousesController < ApplicationController
   end
 
   def create
-    result = House::Register.new(house_params.to_h).call
-
-    if result.success?
-      render json: result.value!
-    else
-      render json: { errors: result.failure }, status: :unprocessable_entity
-    end
+    typical_response House::Register, :created
   end
-
-  #### below - update ####
 
   def destroy
-    @house = House.find(params[:id])
-    @house.destroy
-    redirect_to houses_path
-  end
-
-  def edit
-    @house = House.find(params[:id])
+    typical_response House::Delete, :no_content
   end
 
   def update
-    @house = House.find(params[:id])
-    if @house.update(house_params)
-      redirect_to @house
-    else
-      render :edit
-    end
+    typical_response House::Update, :ok
   end
 
   private
 
+  def typical_response(service_class, positive_status, negative_status = :unprocessable_entity)
+    result = service_class.new(house_params.to_h).call
+
+    if result.success?
+      render json: result.value!
+    else
+      render json: { errors: result.failure }, status: :not_found
+    end
+  end
+
   def house_params
     params.require(:house).permit(:creator_id, :address, :latitude, :longitude)
+      .merge(params.permit(:id))
   end
 
   def home_search_area
@@ -76,9 +68,5 @@ class HousesController < ApplicationController
     return unless coords
 
     coords.split(',').map { |coord| coord.to_f }
-  end
-
-  def geografic(longitude, latitude)
-    RGeo::Geographic.spherical_factory.point(longitude, latitude)
   end
 end
