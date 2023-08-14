@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class HousesController < ApplicationController
+  include CoordinateZoneTools
+
   before_action :authenticate_user!
 
   def index
@@ -42,31 +44,18 @@ class HousesController < ApplicationController
 
   private
 
+  def house_params
+    params.require(:house).permit(:creator_id, :address, :latitude, :longitude)
+          .merge(params.permit(:id))
+  end
+
   def typical_response(service_class, positive_status, negative_status = :unprocessable_entity)
     result = service_class.new(house_params.to_h).call
 
     if result.success?
-      render json: result.value!
+      render json: result.value!, status: positive_status
     else
-      render json: { errors: result.failure }, status: :not_found
+      render json: { errors: result.failure }, status: negative_status
     end
-  end
-
-  def house_params
-    params.require(:house).permit(:creator_id, :address, :latitude, :longitude)
-      .merge(params.permit(:id))
-  end
-
-  def home_search_area
-    @home_search_area ||= {
-      top_right: calculate_coordinates(params[:topRightCoords]),
-      bottom_left: calculate_coordinates(params[:bottomLeftCoords])
-    }
-  end
-
-  def calculate_coordinates(coords)
-    return unless coords
-
-    coords.split(',').map { |coord| coord.to_f }
   end
 end

@@ -23,6 +23,8 @@ module Neighborhood
       end
     end
 
+    config.autoload_paths << Rails.root.join('lib')
+
     # TODO: At the moment it is not critical, but in the future you should switch to Redis
     config.middleware.use ActionDispatch::Session::CookieStore, key: '_session', expire_after: 1.hour
   end
