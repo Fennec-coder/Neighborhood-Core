@@ -368,6 +368,7 @@ DEPENDENCIES
   dotenv
   dry-initializer
   dry-monads
+  dry-schema
   dry-validation
   factory_bot_rails
   faker

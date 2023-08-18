@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-HouseSchema = Dry::Schema.Params do
-  required(:id).maybe(:integer)
-  required(:creator_id).maybe(:integer)
-end
-
 class House::Delete
   extend  Dry::Initializer
   include Dry::Monads[:result]
+
+  HouseSchema = Dry::Schema.Params do
+    required(:id).maybe(:integer)
+    required(:creator_id).maybe(:integer)
+  end
 
   param :house_params
 

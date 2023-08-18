@@ -5,15 +5,15 @@ require 'rails_helper'
 RSpec.describe House::GetCoordinatesByRange, type: :service do
   let(:valid_search_area) do
     {
-      bottom_left: [0.0, 0.0],
-      top_right: [1.0, 1.0]
+      top_left:     [1.0, 1.0],
+      bottom_right: [0.0, 0.0]
     }
   end
 
   let(:invalid_search_area) do
     {
-      bottom_left: [0.0, 0.0],
-      top_right: [1.0]
+      top_left:     [1.0],
+      bottom_right: [0.0, 0.0]
     }
   end
 
@@ -37,7 +37,7 @@ RSpec.describe House::GetCoordinatesByRange, type: :service do
         result = described_class.new(invalid_search_area).call
 
         expect(result).to be_failure
-        expect(result.failure.to_h).to have_key(:top_right)
+        expect(result.failure.to_h).to have_key(:top_left)
       end
     end
   end

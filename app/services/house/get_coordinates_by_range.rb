@@ -1,10 +1,5 @@
 # frozen_string_literal: true
 
-HouseCoordinatesSchema = Dry::Schema.Params do
-  required(:top_left).array(:float).value(size?: 2)
-  required(:bottom_right).array(:float).value(size?: 2)
-end
-
 class House::GetCoordinatesByRange
   extend  Dry::Initializer
   include Dry::Monads[:result]
