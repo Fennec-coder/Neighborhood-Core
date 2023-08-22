@@ -26,8 +26,8 @@ RSpec.describe House::Register, type: :service do
   describe '#call' do
     context 'with valid data' do
       it 'first time creates, second time fails' do
-        result1 = described_class.new(valid_house_data).call
-        result2 = described_class.new(valid_house_data).call
+        result1 = described_class.new(valid_house_data, creator.id).call
+        result2 = described_class.new(valid_house_data, creator.id).call
 
         expect(result1).to be_success
         expect(result2).to be_failure
@@ -37,7 +37,7 @@ RSpec.describe House::Register, type: :service do
 
     context 'with invalid data' do
       it 'respond with fail' do
-        result = described_class.new(invalid_house_data).call
+        result = described_class.new(invalid_house_data, creator.id).call
 
         expect(result).to be_failure
 

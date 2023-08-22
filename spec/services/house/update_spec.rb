@@ -15,7 +15,7 @@ RSpec.describe House::Update do
     }
   end
 
-  subject { described_class.new(house_params) }
+  subject { described_class.new(house_params, creator.id) }
 
   describe '#call' do
     context 'when house exists and params are valid' do

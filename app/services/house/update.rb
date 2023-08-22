@@ -5,6 +5,7 @@ class House::Update
   include Dry::Monads[:result]
 
   param :house_params
+  param :user_id
 
   def call
     validated_params = HouseUpdateSchema.call(house_params)
@@ -13,7 +14,7 @@ class House::Update
 
     params = validated_params.to_h
 
-    house = House.find_by(params.slice(:id, :creator_id))
+    house = House.find_by(params.slice(:id, :user_id))
 
     return Failure('House not found') if house.nil?
 

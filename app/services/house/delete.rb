@@ -6,10 +6,10 @@ class House::Delete
 
   HouseSchema = Dry::Schema.Params do
     required(:id).maybe(:integer)
-    required(:creator_id).maybe(:integer)
   end
 
   param :house_params
+  param :user_id
 
   def call
     validated_params = HouseSchema.call(house_params)
@@ -18,7 +18,7 @@ class House::Delete
 
     params = validated_params.to_h
 
-    house = House.find_by(params)
+    house = House.find_by(params.merge(creator_id: user_id))
 
     return Failure("The user's registered home was not found") if house.blank?
 

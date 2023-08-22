@@ -5,6 +5,7 @@ class House::Register
   include Dry::Monads[:result]
 
   param :house_params
+  param :user_id
 
   def call
     validated_params = HouseRegisterSchema.call(house_params)
@@ -15,7 +16,7 @@ class House::Register
 
     house = House.new(
       address: params[:address],
-      creator_id: params[:creator_id],
+      creator_id: user_id,
       location:
         RGeo::Geographic.spherical_factory(srid: 4326)
           .point(params[:longitude], params[:latitude])
