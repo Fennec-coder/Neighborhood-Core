@@ -3,11 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe House::Delete do
-  let!(:creator) { create(:user) }
+  let!(:creator)       { create(:user) }
+  let(:existing_house) { create(:house, creator_id: creator.id) }
 
   let(:house_params) do
     {
-      id: 1,
+      id: existing_house.id,
       creator_id: creator.id
     }
   end
@@ -16,8 +17,6 @@ RSpec.describe House::Delete do
 
   describe '#call' do
     context 'when house exists' do
-      let(:existing_house) { create(:house, id: 1, creator_id: creator.id) }
-
       it 'deletes the house and returns success message' do
         allow(House).to receive(:find_by).and_return(existing_house)
         allow(existing_house).to receive(:delete).and_return(true)
@@ -41,8 +40,6 @@ RSpec.describe House::Delete do
     end
 
     context 'when house deletion fails' do
-      let(:existing_house) { create(:house, id: 1, creator_id: creator.id) }
-
       it 'returns a failure with house errors' do
         allow(House).to receive(:find_by).and_return(existing_house)
         allow(existing_house).to receive(:delete).and_return(false)

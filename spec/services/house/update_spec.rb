@@ -19,7 +19,7 @@ RSpec.describe House::Update do
 
   describe '#call' do
     context 'when house exists and params are valid' do
-      let(:existing_house) { create(:house, id: 1, creator_id: creator.id) }
+      let(:existing_house) { create(:house, creator_id: creator.id) }
 
       it 'updates the house' do
         allow(House).to receive(:find_by).and_return(existing_house)
@@ -56,7 +56,7 @@ RSpec.describe House::Update do
     end
 
     context 'when house update fails' do
-      let(:existing_house) { create(:house, id: 1, creator_id: creator.id) }
+      let(:existing_house) { create(:house, creator_id: creator.id) }
 
       it 'returns a failure with house errors' do
         allow(House).to receive(:find_by).and_return(existing_house)
