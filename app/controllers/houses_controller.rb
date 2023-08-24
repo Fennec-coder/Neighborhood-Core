@@ -1,91 +1,60 @@
 # frozen_string_literal: true
 
 class HousesController < ApplicationController
+  include CoordinateZoneTools
+
   before_action :authenticate_user!
 
   def index
+    unless home_search_area
+      render json: { errors: ['Please provide search parameters.'] },
+             status: :unprocessable_entity and return
+    end
 
+    result = House::GetCoordinatesByRange.new(home_search_area).call
+
+    if result.success?
+      render json: result.value!
+    else
+      render json: { errors: result.failure }, status: :unprocessable_entity
+    end
   end
 
   def show
-    @house = House.find(params[:id])
-  end
+    house = House.find_by(id: params[:id])
 
-  def new
-    @house = House.new
+    if house
+      render json: house.to_json
+    else
+      render status: :not_found
+    end
   end
 
   def create
-    @house = House.new(house_params)
-    @house.location = "POINT(#{location_params.values.join(' ')})"
-    @house.creator = current_user
-
-    if @house.save
-      redirect_to house_path(@house), notice: "Congratulations! House successfully registered!"
-    else
-      redirect_to :new_house, alert: @house.errors.full_messages.join(', ')
-    end
+    render_response House::Register, :created
   end
 
   def destroy
-    @house = House.find(params[:id])
-    @house.destroy
-    redirect_to houses_path
-  end
-
-  def edit
-    @house = House.find(params[:id])
+    render_response House::Delete, :no_content
   end
 
   def update
-    @house = House.find(params[:id])
-    if @house.update(house_params)
-      redirect_to @house
-    else
-      render :edit
-    end
-  end
-
-  def coordinates
-    houses = House.where(
-      'ST_Intersects(location, ST_MakeEnvelope(?, ?, ?, ?))',
-      *home_search_area[:bottom_left],
-      *home_search_area[:top_right]
-    ) if home_search_area
-
-    render json: houses.to_json
+    render_response House::Update, :ok
   end
 
   private
 
   def house_params
-    params.require(:house).permit(:name, :address)
+    params.require(:house).permit(:address, :latitude, :longitude).merge(params.permit(:id))
   end
 
-  def location_params
-    params.require(:house).permit(:latitude, :longitude)
-  end
+  def render_response(service_class, positive_status, negative_status = :unprocessable_entity)
+    result = service_class.new(house_params.to_h, current_user.id).call
 
-  def home_search_area
-    return unless search_area_params_present?
-
-    additional_loading = ENV['ADDITIONAL_LOADING_OF_MAP'].to_f
-
-    @home_search_area ||= {
-      top_right: calculate_coordinates(params[:topRightCoords], additional_loading),
-      bottom_left: calculate_coordinates(params[:bottomLeftCoords], -additional_loading)
-    }
-  end
-
-  def search_area_params_present?
-    params[:topRightCoords].present? && params[:bottomLeftCoords].present?
-  end
-
-  def calculate_coordinates(coords, adjustment)
-    coords.split(',').map { |coord| coord.to_f + adjustment }
-  end
-
-  def geografic(longitude, latitude)
-    RGeo::Geographic.spherical_factory.point(longitude, latitude)
+    if result.success?
+      render json: result.value!, status: positive_status
+    else
+      render json: { errors: result.failure }, status: negative_status
+    end
   end
 end

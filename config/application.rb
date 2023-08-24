@@ -9,15 +9,23 @@ Bundler.require(*Rails.groups)
 
 module Neighborhood
   class Application < Rails::Application
-    # Initialize configuration defaults for originally generated Rails version.
+    config.api_only = true
+
     config.load_defaults 7.0
 
-    # Configuration for the application, engines, and railties goes here.
-    #
-    # These settings can be overridden in specific environments using the files
-    # in config/environments, which are processed later.
-    #
-    # config.time_zone = "Central Time (US & Canada)"
-    # config.eager_load_paths << Rails.root.join("extras")
+    config.middleware.use Rack::Cors do
+      allow do
+        origins '*'
+        resource '*',
+          headers: :any,
+          expose: ['access-token', 'expiry', 'token-type', 'uid', 'client'],
+          methods: [:get, :post, :options, :delete, :put]
+      end
+    end
+
+    config.autoload_paths << Rails.root.join('lib')
+
+    # TODO: At the moment it is not critical, but in the future you should switch to Redis
+    config.middleware.use ActionDispatch::Session::CookieStore, key: '_session', expire_after: 1.hour
   end
 end

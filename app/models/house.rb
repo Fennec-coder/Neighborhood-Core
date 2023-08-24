@@ -7,5 +7,5 @@ class House < ApplicationRecord
   validates :location, presence: true
 
   has_many :user_house_subscriptions
-  has_many :houses, through: :user_house_subscriptions
+  has_many :subscribers, through: :user_house_subscriptions
 end
