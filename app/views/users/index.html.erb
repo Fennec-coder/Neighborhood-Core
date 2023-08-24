@@ -1,8 +1,0 @@
-<h1>Users</h1>
-<%= link_to "Registered houses", houses_path%>
-<%= link_to "Register new house", new_house_path %>
-<ul>
-  <% @users.each do |user| %>
-    <li><%= user.email %>, <%= user.name %></li>
-  <% end %>
-</ul>
